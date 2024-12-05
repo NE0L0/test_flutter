@@ -30,6 +30,9 @@ class SignInScreen extends BlocScreenWidget<SignInBloc, SignInState>
 
 class SignInScreenContentState extends BlocScreenContentState<SignInBloc, SignInState> {
 
+  final usernameTextController = TextEditingController();
+  final passwordTextController = TextEditingController();
+
   @override
   Widget buildContent(BuildContext context, SignInState state) {
     if(state is SignInStateLoading) {
@@ -56,12 +59,16 @@ class SignInScreenContentState extends BlocScreenContentState<SignInBloc, SignIn
 
   Widget _buildMainContent(BuildContext context, SignInState state)
   {
+    usernameTextController.text = state.username.value;
+    passwordTextController.text = state.password.value;
+
     return Padding(
       padding: const EdgeInsets.only(left: 16, right: 16),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           TextField(
+            controller: usernameTextController,
             decoration: InputDecoration(
               hintText: 'Username',
               error: state.username.error?.let((it) => Text(it)),
@@ -69,6 +76,7 @@ class SignInScreenContentState extends BlocScreenContentState<SignInBloc, SignIn
             onChanged: _onUsernameChanged,
           ),
           TextField(
+            controller: passwordTextController,
             decoration: InputDecoration(
               hintText: 'Password',
               error: state.password.error?.let((it) => Text(it)),
